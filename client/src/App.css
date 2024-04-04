@@ -1,0 +1,70 @@
+.App {
+  text-align: center;
+  justify-content: center;
+  
+}
+
+#gallery{
+  margin-left:34%;
+  margin-right:34%;
+}
+
+ .td{
+  width: 200px;
+
+} 
+.ourday{
+  position: relative;
+  border: 1px solid black;
+  height: 130px;
+}
+
+.reactJewishDatePicker .selectedDate {
+  padding: 2px 15px 2px 5px;
+  border-radius: 4px;
+  user-select: none;
+  min-height: 20px;
+  text-align: center;
+  position: relative;
+  font-size: smaller;
+}
+
+.footer{
+  bottom:0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  position: absolute;
+}
+table {
+    border-collapse: separate;
+    text-indent: initial;
+    border-spacing: 2px;
+} 
+
+.weekdayWrapper{
+  display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background-color: #5c0076;
+    padding: 2px;
+}
+.selectedDate {
+  border:solid 1px gray
+}
+.responsiveTable {
+  width:90%
+}
+
+.cal{
+margin: auto;
+border: solid rgb(179, 177, 177) 1px;
+}
+
+/* @media only screen and (max-width: 1024px) {
+  .responsiveTable {
+  }
+} */
+
+.cul{
+  text-align:right;
+}
