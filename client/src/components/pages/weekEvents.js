@@ -6,8 +6,10 @@ import { Tooltip } from 'primereact/tooltip';
 import { useGetEventsByWeekQuery } from '../../slices/eventSlice';
 import { Checkbox } from "primereact/checkbox";
 import AppBAr from '../appBar';
+import { useSelector } from 'react-redux';
 
 export default function WeekEvents() {
+    const {isUserLoggedIn} = useSelector((state)=>state.auth)
     const { data: events, isLoading, isError, error } = useGetEventsByWeekQuery()
     const dt = useRef(null);
     const days=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת']
@@ -61,7 +63,7 @@ const chekedTemplate=(event)=>{
 
     return (
         <>
-        <AppBAr/>
+        {isUserLoggedIn&&
         <div className="card">
             <h1>אירועי השבוע</h1>
             <Tooltip target=".export-buttons>button" position="bottom" />
@@ -72,7 +74,7 @@ const chekedTemplate=(event)=>{
                             : <Column className='cul' key={index} field={col.field} header={col.header} />
                     ))}
                 </DataTable>
-        </div>
+        </div>}
         </>
     );
 }

@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { useForm } from "react-hook-form";
-import { InputNumber } from 'primereact/inputnumber';
 import { useGetPersonsQuery } from "../slices/personSlice";
 import { useCreateEventMutation } from "../slices/eventSlice";
 import { Dropdown } from 'primereact/dropdown';
@@ -151,10 +150,13 @@ export default function AddEventDialog(props) {
             <div>
                 <Dialog header={str} visible={visible} style={{ width: '50vw' }} onHide={() => { setVisible(false); props.setVisible(false) }} >
                     <AddPersonDialog />
+                    <br/>
+                    <br/>
+
                     <form onSubmit={formik.handleSubmit} >
                         <Toast ref={toast} />
                             <Dropdown
-                            className="w-full md:w-17rm"
+                            className="dropdown"
                             name="personname"
                                 value={formik.values.personname}
                                 options={customers}
@@ -166,6 +168,7 @@ export default function AddEventDialog(props) {
                                 }}
                             />
                         {getFormErrorMessage("personname")}
+                        <br />
                         <br />
 
                         <span className="p-float-label p-input-icon-right">
@@ -201,7 +204,6 @@ export default function AddEventDialog(props) {
                                 value={"הגברה"}></Checkbox>
                             <label htmlFor="ingredient1" className="ml-2" >  הגברה </label>
                         </div>
-                        {getFormErrorMessage("speakers")}
                         <br />
                         <div className="flex justify-content-center">
                             {radioBtns.map((btn, i) => {

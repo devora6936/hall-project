@@ -71,7 +71,6 @@ const chekedTemplate=(event)=>{
         <>
         <Toast ref={toast} />
 
-        <AppBAr/>
         <div className="card">
             <h1>אירועי השבוע</h1>
             <Tooltip target=".export-buttons>button" position="bottom" />

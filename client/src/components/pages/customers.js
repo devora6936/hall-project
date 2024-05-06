@@ -37,7 +37,6 @@ const Customers = () => {
         <>
             <Toast ref={toast} />
 
-            <AppBAr flag={true} setTxt={setTxt}/>
             <AddPersonDialog />
             {customers?.map(cust => cust.personname.includes(txt)&&<PersonCard cust={cust} />)}
         </>

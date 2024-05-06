@@ -9,7 +9,7 @@ import { set, useForm } from "react-hook-form";
 import { Button } from 'primereact/button';
 import { useLoginMutation, useRegisterMutation } from '../../slices/authApiSlice';
 import { setToken } from '../../slices/authSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Password } from 'primereact/password';
@@ -19,6 +19,7 @@ import AppBAr from '../appBar';
 
 
 export default function Register() {
+    const {isUserLoggedIn} = useSelector((state)=>state.auth)
     const toast = React.useRef(null);
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -72,8 +73,8 @@ export default function Register() {
 
     return (
         <>
-        <AppBAr/>
-            {isLoading && <i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem' }}></i>}
+        {isUserLoggedIn &&
+        <div>
             <h1>הוספת מזכירה </h1>
             <br />
             <br />
@@ -146,6 +147,7 @@ export default function Register() {
                     <Button label="הוספה" type="submit" icon="pi pi-check" />
                 </form>
             </div>
+            </div>}
         </>
     )
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import ReactDOM from 'react-dom/client';
+import { Tag } from 'primereact/tag';
 import 'primeicons/primeicons.css';
 import { PrimeReactProvider } from 'primereact/api';
 import 'primeflex/primeflex.css';
@@ -26,13 +27,31 @@ export default function AddPersonDialog() {
     const [visible, setVisible] = useState(false);
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const [createCustomer, { data: res, isLoading, isError, error }] = useCreatePersonMutation()
+    const [statuses] = useState(['חבר', 'שותף', 'אורח']);
     
+    const getSeverity = (value) => {
+        switch (value) {
+            case 'שותף':
+                return 'success';
+
+            case 'חבר':
+                return 'warning';
+
+            case 'אורח':
+                return 'info';
+
+            default:
+                return null;
+        }
+    };
+
     const formik = useFormik({
         initialValues: {
             personname: '',
             personType: '',
             email: '',
-            phone: ''
+            phone: '',
+            phone2:''
         },
         validate: (data) => {
             let errors = {};
@@ -43,7 +62,7 @@ export default function AddPersonDialog() {
             return errors;
         },
         onSubmit: (data) => {
-            const data2={personname:data.personname,phone:data.phone,email:data.email,personType:data.personType.personType}
+            const data2={personname:data.personname,phone:data.phone,phone2:data.phone2,email:data.email,personType:data.personType.personType}
             createCustomer(data2)
             formik.resetForm();
         }
@@ -96,7 +115,7 @@ export default function AddPersonDialog() {
                             <InputText
                                 id="phone2"
                                 name="phone2"
-                                value={formik.values.phone}
+                                value={formik.values.phone2}
                                 className={classNames({ 'p-invalid': isFormFieldInvalid('phone2') })}
                                 onChange={(e) => {
                                     formik.setFieldValue('phone2', e.target.value);
@@ -125,12 +144,16 @@ export default function AddPersonDialog() {
                             <Dropdown
                             className="w-full md:w-17rm"
                                 value={formik.values.personType}
-                                options={cities}
+                                options={statuses}
                                 name="personType"
                                 optionLabel="personType"
                                 placeholder="הרשאה"
+                                itemTemplate={(option) => {
+                                    return <Tag value={option} severity={getSeverity(option)}></Tag>;
+                                }}
                                 onChange={(e) => {
-                                    formik.setFieldValue('personType', e.value);
+                                    const roleObj={personType:e.value}
+                                    formik.setFieldValue('personType',roleObj );
                                 }}
                             />
                              <i className="pi pi-check" style={{ marginRight: "7px" }} />
