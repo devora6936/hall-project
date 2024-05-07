@@ -7,7 +7,7 @@ let transporter = nodemailer.createTransport({
     secure: false, // Secure connection is not required because port 587 uses STARTTLS
     auth: {
         user: 'heichal@outlook.co.il',
-        pass: 'kehilotYaakov21'
+        pass: process.env.EMAIL_PASSWORD
     },
     tls: {
         rejectUnauthorized: false // Accept self-signed certificates
