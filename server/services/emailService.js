@@ -47,7 +47,7 @@ const nodemailer = require('nodemailer');
 // Function to send an email
 function sendEmail(recipient, subject, message) {
     let mailOptions = {
-        from: '<heichal@outlook.co.il>',
+        from: 'אולם היכל אברהם יצחק<heichal@outlook.co.il>',
         to: recipient,
         subject: subject,
         text: message

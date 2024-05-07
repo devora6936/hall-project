@@ -4,10 +4,6 @@ const Person = require('../models/Person');
 
 async function importDataFromExcel(filePath) {
   try {
-    //Connect to MongoDB
-    // await mongoose.connect('mongodb://localhost:27017/325573798_project', { useNewUrlParser: true, useUnifiedTopology: true });
-    // console.log('Connected to MongoDB');
-
     // Load Excel file
     const workbook = xlsx.readFile(filePath);
     const sheetName = workbook.SheetNames[0];
@@ -19,19 +15,20 @@ async function importDataFromExcel(filePath) {
     // Save each row to MongoDB
     for (const data of jsonData) {
       const person = new Person(data);
-      await person.save();
+      try {
+        await person.save();
+      } catch (error) {
+        console.log(error);
+      }
+      
       console.log('Data saved:', data);
     }
 
     console.log('Data import completed.');
   } catch (error) {
-    console.error('Error importing data:', error);
+    console.log('Error importing data:', error);
    } 
-//    finally {
-//     // Disconnect from MongoDB after importing data
-//     await mongoose.disconnect();
-//     console.log('Disconnected from MongoDB');
-//   }
+
 }
 
 module.exports = { importDataFromExcel }

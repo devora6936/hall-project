@@ -4,6 +4,7 @@ import { Button } from 'primereact/button';
 import { useGetEventsByDAteQuery } from "../slices/eventSlice";
 import AddEventDialog from './addEventDialog'
 import SetEventDialog from './setEventDialog'
+import { Dialog } from "primereact/dialog";
 
 
 const Day = (props) => {
@@ -13,6 +14,7 @@ const Day = (props) => {
     const comp=new Date(props.date.getFullYear(),props.date.getMonth(),props.date.getDate()+1).toISOString().split('T')[0]
     const [heb, setHeb] = useState()
     const { data: events, isLoading, isError, error } = useGetEventsByDAteQuery(date.split('T')[0])
+    const [visible,setVisible]=useState(false)
     //הוספה
     const [morning,setMorning]=useState(false)
     const [night,setNight]=useState(false)
@@ -36,42 +38,73 @@ const Day = (props) => {
     const findEventInDay=(type)=>{
         return events?.filter((e)=>e.eventType==type)[0]
     }
+    const renderButtons = () => {
+        if (props.isSmallScreen) {
+            return (
+                <div className="buttons-container">
+                    <Button label="אירועים" severity="אירועים" text onClick={() => setVisible(true)} />
+                    <Dialog header={`${heb?.heDateParts.d} ${heb?.heDateParts.m}`}  visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)} >
+                        <div className="buttons-container">
+                            {heb ? hebDate == 0 ?
+                                <div>
+                                    <Button tooltip="קידוש" tooltipOptions={{ position: "top" }} style={{ background: findEventInDay("קידוש") ? '#a6b4ee' : 'none' }} onClick={() => { !findEventInDay("קידוש") ? setKidush(true) : setKIdushFlag(true) }} outlined={false} icon={(options) => <img alt="dropdown icon" src="./goblet.png" {...options.iconProps} />} disabled={findEventInDay('ערב')} rounded text />
+                                    <Button tooltip="שבת" tooltipOptions={{ position: "top" }} style={{ background: findEventInDay("שבת") ? '#a6b4ee' : 'none' }} onClick={() => { !findEventInDay("שבת") ? setShabbat(true) : setShabbatFlag(true) }} icon={(options) => <img alt="dropdown icon" src="./candles.png" {...options.iconProps} />} disabled={findEventInDay('ערב')} rounded text />
+                                    <Button tooltip="מוצ''ש" tooltipOptions={{ position: "top" }} style={{ background: findEventInDay("ערב") ? '#a6b4ee' : 'none' }} onClick={() => { !findEventInDay("ערב") ? setNight(true) : setNightFlag(true) }} icon="pi pi-moon" disabled={findEventInDay('קידוש') || findEventInDay('שבת')} rounded text />
+                                </div>
+                                :
+                                <div>
+                                    <Button icon="pi pi-sun" tooltip="בוקר" tooltipOptions={{ position: "top" }} style={{ background: findEventInDay("בוקר") ? '#a6b4ee' : 'none' }} onClick={() => { !findEventInDay("בוקר") ? setMorning(true) : setMorningFlag(true) }} disabled={findEventInDay('יום שלם')} rounded text />
+                                    <Button icon="pi pi-moon" tooltip="ערב" tooltipOptions={{ position: "top" }} style={{ background: findEventInDay("ערב") ? '#a6b4ee' : 'none' }} onClick={() => { !findEventInDay("ערב") ? setNight(true) : setNightFlag(true) }} disabled={findEventInDay('יום שלם')} rounded text />
+                                    <Button icon={(options) => <img alt="dropdown icon" src="./day-and-night.png" {...options.iconProps} />} tooltip="יום שלם" tooltipOptions={{ position: "top" }} style={{ background: findEventInDay("יום שלם") ? '#a6b4ee' : 'none' }} onClick={() => { !findEventInDay("יום שלם") ? setDay(true) : setDayFlag(true) }} disabled={findEventInDay('ערב') || findEventInDay('בוקר')} rounded text />
+                                </div> : <></>}
+                        </div>
+                    </Dialog>
+                </div>
+            );
+        } else {
+            return (
+                <div className="buttons-container">
+                    {heb ? hebDate == 0 ?
+                        <div>
+                            <Button tooltip="קידוש" tooltipOptions={{ position: "top" }} style={{ background: findEventInDay("קידוש") ? '#a6b4ee' : 'none' }} onClick={() => { !findEventInDay("קידוש") ? setKidush(true) : setKIdushFlag(true) }} outlined={false} icon={(options) => <img alt="dropdown icon" src="./goblet.png" {...options.iconProps} />} disabled={findEventInDay('ערב')} rounded text />
+                            <Button tooltip="שבת" tooltipOptions={{ position: "top" }} style={{ background: findEventInDay("שבת") ? '#a6b4ee' : 'none' }} onClick={() => { !findEventInDay("שבת") ? setShabbat(true) : setShabbatFlag(true) }} icon={(options) => <img alt="dropdown icon" src="./candles.png" {...options.iconProps} />} disabled={findEventInDay('ערב')} rounded text />
+                            <Button tooltip="מוצ''ש" tooltipOptions={{ position: "top" }} style={{ background: findEventInDay("ערב") ? '#a6b4ee' : 'none' }} onClick={() => { !findEventInDay("ערב") ? setNight(true) : setNightFlag(true) }} icon="pi pi-moon" disabled={findEventInDay('קידוש') || findEventInDay('שבת')} rounded text />
+                        </div>
+                        :
+                        <div>
+                            <Button icon="pi pi-sun" tooltip="בוקר" tooltipOptions={{ position: "top" }} style={{ background: findEventInDay("בוקר") ? '#a6b4ee' : 'none' }} onClick={() => { !findEventInDay("בוקר") ? setMorning(true) : setMorningFlag(true) }} disabled={findEventInDay('יום שלם')} rounded text />
+                            <Button icon="pi pi-moon" tooltip="ערב" tooltipOptions={{ position: "top" }} style={{ background: findEventInDay("ערב") ? '#a6b4ee' : 'none' }} onClick={() => { !findEventInDay("ערב") ? setNight(true) : setNightFlag(true) }} disabled={findEventInDay('יום שלם')} rounded text />
+                            <Button icon={(options) => <img alt="dropdown icon" src="./day-and-night.png" {...options.iconProps} />} tooltip="יום שלם" tooltipOptions={{ position: "top" }} style={{ background: findEventInDay("יום שלם") ? '#a6b4ee' : 'none' }} onClick={() => { !findEventInDay("יום שלם") ? setDay(true) : setDayFlag(true) }} disabled={findEventInDay('ערב') || findEventInDay('בוקר')} rounded text />
+                        </div> : <></>}
+                </div>
+            );
+        }
+    };
     return (
         <>
             <div className="ourday" style={{ border:date.split('T')[0]==comp?'2px solid #8284f5':'1px solid #dcdfe1'}}>
                 <div>
-                    <h4>{heb && `${heb.heDateParts.d} ${heb.heDateParts.m} `}</h4>
-                    {heb ? hebDate == 0 ? <div>{heb.events}</div> : <div>{heb.events.slice(0, heb.events.length - 1)}</div> : <></>}
+                    <div>{heb && `${heb.heDateParts.d} ${heb.heDateParts.m} `}</div>
+                    {heb ? hebDate == 0 ?heb.events[heb.events.length - 1].includes("Omer")?<div>{heb.events.slice(0, heb.events.length - 1)}</div>:<div>{heb.events}</div> : <div>{heb.events.slice(0, heb.events.length - 2)}</div> : <></>}
                 </div>
                 <div className="footer">
-                    {heb ? hebDate == 0 ?
-                        <div>
-                            <Button icon={(options) => <img alt="dropdown icon" src="./goblet.png" {...options.iconProps} />}tooltip="קידוש" tooltipOptions={{position:'top'}} disabled={findEventInDay('ערב')}rounded text aria-lael="Filter" style={{backgroundColor:findEventInDay('קידוש')&&'#a6b4ee'}} onClick={() => {!findEventInDay('קידוש')?setKidush(true):setKIdushFlag(true)}} />
-                            <Button icon={(options) => <img alt="dropdown icon" src="./candles.png" {...options.iconProps} />}tooltip="שבת" tooltipOptions={{position:'top'}} disabled={findEventInDay('ערב')} rounded text aria-lael="Filter" style={{backgroundColor:findEventInDay('שבת')&&'#a6b4ee'}}onClick={() => {!findEventInDay('שבת')?setShabbat(true):setShabbatFlag(true)}} />
-                            <Button icon="pi pi-moon" disabled={findEventInDay('קידוש')||findEventInDay('שבת')}rounded text tooltip="מוצ''ש" tooltipOptions={{position:'top'}} style={{backgroundColor:findEventInDay('ערב')&&'#a6b4ee'}}onClick={() => {!findEventInDay('ערב')?setNight(true):setNightFlag(true)}} />
-                        </div> :
-                        <div>
-                            <Button icon="pi pi-sun"tooltip="בוקר" tooltipOptions={{position:'top'}} disabled={findEventInDay('יום שלם')}rounded text style={{backgroundColor:findEventInDay('בוקר')&&'#a6b4ee'}}onClick={() => {!findEventInDay('בוקר')?setMorning(true):setMorningFlag(true)}} />
-                            <Button icon="pi pi-moon" tooltip="ערב" tooltipOptions={{position:'top'}} disabled={findEventInDay('יום שלם')}rounded text style={{backgroundColor:findEventInDay('ערב')&&'#a6b4ee'}}onClick={() => {!findEventInDay('ערב')?setNight(true):setNightFlag(true)}} />
-                            <Button icon={(options) => <img alt="dropdown icon" src="./day-and-night.png" {...options.iconProps} />} tooltip="יום שלם" tooltipOptions={{position:'top'}} disabled={findEventInDay('ערב')||findEventInDay('בוקר')}rounded text aria-lael="Filter" style={{backgroundColor :findEventInDay('יום שלם')&&'#a6b4ee'}} onClick={() => {!findEventInDay('יום שלם')?setDay(true):setDayFlag(true)}} />
-                        </div> : <></>
-                    }
+                    {renderButtons()}
                 </div>
             </div>
           
-            {morning?<AddEventDialog eventType={'בוקר'} date={date} visible={true} setVisible={setMorning} />:<></>}
+            {morning?<AddEventDialog eventType={'בוקר'} date={date} visible={true} setVisible={setMorning} heb={heb}/>:<></>}
             {morningflag?<SetEventDialog eventType={'בוקר'} date={date} setVisible={setMorningFlag}visible={true}  event={events?.filter((e)=>e.eventType=='בוקר')[0]}/>:<></>}
             
-            {night?<AddEventDialog eventType={'ערב'} date={date} visible={true} setVisible={setNight}/>:<></>}
+            {night?<AddEventDialog eventType={'ערב'} date={date} visible={true} setVisible={setNight} heb={heb}/>:<></>}
             {nightflag?<SetEventDialog eventType={'ערב'} date={date} setVisible={setNightFlag}visible={true}  event={events?.filter((e)=>e.eventType=='ערב')[0]}/>:<></>}
             
-            {shabbat?<AddEventDialog eventType={'שבת'} date={date} visible={true} setVisible={setShabbat}/>:<></>}
+            {shabbat?<AddEventDialog eventType={'שבת'} date={date} visible={true} setVisible={setShabbat} heb={heb}/>:<></>}
             {shabbatFlag?<SetEventDialog eventType={'שבת'} date={date} setVisible={setShabbatFlag}visible={true}  event={events?.filter((e)=>e.eventType=='שבת')[0]}/>:<></>}
             
-            {kidush?<AddEventDialog eventType={'קידוש'} date={date} visible={true} setVisible={setKidush}/>:<></>}
+            {kidush?<AddEventDialog eventType={'קידוש'} date={date} visible={true} setVisible={setKidush} heb={heb}/>:<></>}
             {kidushFlag?<SetEventDialog eventType={'קידוש'} date={date} setVisible={setKIdushFlag}visible={true}  event={events?.filter((e)=>e.eventType=='קידוש')[0]}/>:<></>}
            
-            {day?<AddEventDialog eventType={'יום שלם'} date={date} visible={true} setVisible={setDay}/>:<></>}
+            {day?<AddEventDialog eventType={'יום שלם'} date={date} visible={true} setVisible={setDay} heb={heb}/>:<></>}
             {dayFlag?<SetEventDialog eventType={'יום שלם'} date={date} setVisible={setDayFlag}visible={true}  event={events?.filter((e)=>e.eventType=='יום שלם')[0]}/>:<></>}
 
         </>
