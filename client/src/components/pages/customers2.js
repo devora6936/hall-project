@@ -5,7 +5,7 @@ import { Button } from 'primereact/button';
 import { Tooltip } from 'primereact/tooltip';
 import { Checkbox } from "primereact/checkbox";
 import AppBAr from '../appBar';
-import { useGetPersonsQuery, useUpdatePersonMutation } from '../../slices/personSlice';
+import { useGetPersonsQuery, useLoadPersonsMutation, useUpdatePersonMutation } from '../../slices/personSlice';
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { InputText } from 'primereact/inputtext';
 import AddPersonDialog from '../addPersonDialog';
@@ -13,6 +13,7 @@ import UpdateDialog from '../updateDialog';
 import { Tag } from 'primereact/tag';
 import { Dropdown } from 'primereact/dropdown';
 import { useSelector } from 'react-redux';
+import UploadUsers from '../uploadPeopleDialog';
 
 
 
@@ -29,6 +30,7 @@ export default function Customers2() {
 
 
     const { data: events, isLoading, isError, error } = useGetPersonsQuery()
+
     const dt = useRef(null);
     const cols = [
         { field: 'personname', header: 'שם' },
@@ -79,8 +81,10 @@ export default function Customers2() {
                     </span>
                 </div>
                 <div className="flex align-items-center justify-content-end gap-2">
+                    <UploadUsers/>
                     <AddPersonDialog />
                     <Button type="button" icon="pi pi-file" rounded onClick={() => exportCSV(false)} data-pr-tooltip="CSV" />
+                    
                 </div>
             </>
         );

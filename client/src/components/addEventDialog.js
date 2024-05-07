@@ -14,23 +14,27 @@ import { useFormik } from 'formik';
 import { Toast } from 'primereact/toast';
 import { classNames } from 'primereact/utils';
 import { RadioButton } from "primereact/radiobutton";
+import { useSendEmailMutation } from "../slices/emailSlice";
 
 export default function AddEventDialog(props) {
-
     const [visible, setVisible] = useState(props.visible);
 
-    const [selectedPerson, setselectedPerson] = useState(null);
+    // const [selectedPerson, setselectedPerson] = useState(null);
 
     const str = `הוספת אירוע ${props.eventType}`
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
-    const { data: customers, customerisLoading, customerisError, customererror } = useGetPersonsQuery()
+    const { data: customers } = useGetPersonsQuery()
 
-    const [CreateEvent, { data: res, isLoading, isError, error }] = useCreateEventMutation()
+    const [CreateEvent] = useCreateEventMutation()
+
+    const [sendEmail] = useSendEmailMutation()
 
     const [id, setId] = useState('')
     const [type, setType] = useState('')
+    const [email, setEmail] = useState(undefined)
+
 
     const [date, setDate] = useState(props.date?.split("T")[0])
 
@@ -51,6 +55,7 @@ export default function AddEventDialog(props) {
         if (option) {
             setId(option._id)
             setType(option.personType)
+            setEmail(option.email)
             return (
                 <div className="flex align-items-center">
                     <div>{option.personname}</div>
@@ -93,8 +98,13 @@ export default function AddEventDialog(props) {
         onSubmit: (data1) => {
             let data2 = { ...data1, personId: id, date: date, eventType: props.eventType }
             CreateEvent(data2)
+            let str='aaa'
+            formik.values.speakers ? str="המחיר כולל הגברה":str="המחיר ללא הגברה, ניתן להשתמש בהגברה בתוספת של 200 שקלים"
+            const body="תאריך:"+ props.heb.hebrew+" ,"+props.eventType+"\n"+"מחיר:"+formik.values.price+"\n"+str+"\n"+"מצורף תקנון אולם, נא לקרוא בעיון."+"\n מזל טוב!!"
+            email&&sendEmail({recipient:email,subject:"אישור אירוע",message:body})
             props.setVisible(false)
             formik.resetForm()
+
         }
     });
 
@@ -176,8 +186,8 @@ export default function AddEventDialog(props) {
                                 defaultValue={formik.values.price}
                                 className={classNames({ 'p-invalid': isFormFieldInvalid('price') })}
                                 onBlur={(e) => {
-                                    console.log('price value', e.target.value);
                                     formik.setFieldValue('price', e.target.value);
+                                    formik.setFieldValue('price', parseInt(formik.values.price));
                                 }}
                             />
                             <i className="pi pi-dollar" style={{ marginRight: "7px" }} />
