@@ -5,10 +5,10 @@ import { useLoadPersonsMutation } from "../slices/personSlice";
 import { InputText } from "primereact/inputtext";
 
 export default function UploadUsers() {
-    
+
     const [visible, setVisible] = useState(false);
     const [loadPeople] = useLoadPersonsMutation()
-    const [path,setPath]=useState('')
+    const [path, setPath] = useState('')
 
     const headerElement = (
         <div className="inline-flex align-items-center justify-content-center gap-2">
@@ -18,19 +18,18 @@ export default function UploadUsers() {
 
     const footerContent = (
         <div>
-            <Button label="Ok" icon="pi pi-check" onClick={() => {console.log(path);loadPeople({filePath:path});setVisible(false)}} autoFocus />
+            <Button label="Ok" icon="pi pi-check" onClick={() => { loadPeople({ filePath: path }); setVisible(false) }} autoFocus />
         </div>
     );
-console.log(path);
+
     return (
         <div>
             <Button icon="pi pi-users" size="large" rounded outlined severity="Filter" onClick={() => setVisible(true)} />
-            {/* <Button label="Show" icon="pi pi-external-link" onClick={() => setVisible(true)} /> */}
             <Dialog visible={visible} modal header={headerElement} footer={footerContent} style={{ width: '50rem' }} onHide={() => setVisible(false)}>
                 <p className="m-0">
-                    <InputText 
-                    name="path"
-                    onBlur={(e)=>setPath(e.target.value)}
+                    <InputText
+                        name="path"
+                        onBlur={(e) => setPath(e.target.value)}
                     />
                     <label htmlFor="value">הכנס נתיב קובץ</label>
                 </p>
@@ -38,4 +37,3 @@ console.log(path);
         </div>
     )
 }
-        

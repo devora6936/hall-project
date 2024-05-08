@@ -5,7 +5,6 @@ import HomePage from './components/pages/HomePage';
 import { Link, Route, Router, Routes } from 'react-router-dom';
 import Login from './components/pages/login';
 import AdminPage from './components/pages/adminPage';
-import Customers from './components/pages/customers';
 import Events from './components/pages/events';
 import WeekEvents from './components/pages/weekEvents';
 import Register from './components/pages/register';
@@ -16,7 +15,7 @@ import AppLayout from './components/pages/withAppBar';
 function App() {
 
   return (
-    <>
+    <div className='App'>
     <Routes>
           <Route path="/" element={<NoAppBarLayout><HomePage /></NoAppBarLayout>} />
           <Route path="/login" element={<NoAppBarLayout><Login /></NoAppBarLayout>} />
@@ -28,11 +27,8 @@ function App() {
             <Route path='/register' element={<Register />} />
           </Route>
         </Routes>
-    
 
-   
-     
-    </>
+        </div> 
   );
 }
 

@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
-
 import Day from './day'
+
 const Calendar = (props) => {
 
   const [month, setMonth] = useState()
@@ -14,22 +12,21 @@ const Calendar = (props) => {
 
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1148)
 
-
   const updateScreenSize = () => {
     setIsSmallScreen(window.innerWidth <= 1148);
-};
+  };
 
-useEffect(() => {
+  useEffect(() => {
     window.addEventListener("resize", updateScreenSize);
     return () => {
-        window.removeEventListener("resize", updateScreenSize);
+      window.removeEventListener("resize", updateScreenSize);
     };
-}, []);
+  }, []);
+
   const renderDaysInRows = () => {
     const rows = [];
     const daysInMonth = getDaysInMonth(month, year);
     const firstDayOfMonth = new Date(year, month, 1).getDay();
-
     let currentRow = [];
 
     for (let i = 0; i < firstDayOfMonth; i++) {
@@ -44,7 +41,6 @@ useEffect(() => {
         currentRow = [];
       }
     }
-
 
     if (currentRow.length > 0) {
       rows.push(currentRow);
@@ -74,6 +70,7 @@ useEffect(() => {
     setMonth(props.date.getMonth())
     setYear(props.date.getFullYear())
   }, [props.date])
+
   return (
     <>
       <Table>
@@ -94,12 +91,11 @@ useEffect(() => {
               {row.map((day, dayIndex) => (
                 <Td key={dayIndex} className="td">
                   {day && <div className="day-cell">
-                    <Day day={day} month={month} year={year} date={props.date} isSmallScreen={isSmallScreen}/>
+                    <Day day={day} month={month} year={year} date={props.date} isSmallScreen={isSmallScreen} />
                   </div>}
                 </Td>
               ))}
             </Tr>
-
           ))}
         </Tbody>
       </Table>

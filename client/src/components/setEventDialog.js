@@ -1,21 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
-import ReactDOM from 'react-dom/client';
-import 'primeicons/primeicons.css';
-import { PrimeReactProvider } from 'primereact/api';
-import 'primeflex/primeflex.css';
-import 'primereact/resources/primereact.css';
-import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import { InputText } from 'primereact/inputtext';
-import { set, useForm } from "react-hook-form";
-import { Dropdown } from 'primereact/dropdown';
-import 'primeicons/primeicons.css';
-import 'primeflex/primeflex.css';
-import 'primereact/resources/primereact.css';
-import 'primereact/resources/themes/lara-light-indigo/theme.css';
-import { useCreatePersonMutation, useGetPersonsQuery } from "../slices/personSlice";
-import { useCreateEventMutation, useDeleteEventMutation, useUpdateEventMutation } from "../slices/eventSlice";
+import { useForm } from "react-hook-form";
+import { useDeleteEventMutation, useUpdateEventMutation } from "../slices/eventSlice";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Checkbox } from "@mui/material";
 import { RadioButton } from "primereact/radiobutton";
@@ -23,12 +11,9 @@ import { useFormik } from "formik";
 import { Toast } from "primereact/toast";
 import { classNames } from "primereact/utils";
 
-
 export default function SetEventDialog(props) {
 
     const [visible, setVisible] = useState(props.visible);
-    const [value, setValue] = useState()
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const [deleteEvent, { data: res, isLoading, isError, error }] = useDeleteEventMutation()
     const [updateEvent, { data: updateres, updateisLoading, updateisError, updateerror }] = useUpdateEventMutation()
     const str = `עריכת אירוע ${props.eventType}`
@@ -76,17 +61,17 @@ export default function SetEventDialog(props) {
     const getFormErrorMessage = (name) => {
         return isFormFieldInvalid(name) ? <small className="p-error">{formik.errors[name]}</small> : <small className="p-error">&nbsp;</small>;
     };
+
     const handleCheckboxChange = (e) => {
-        formik.setFieldValue('speakers', e.target.checked);
+        formik.setFieldValue('speakers', e.checked);
         let updatedPay = formik.values.price;
-        if (e.target.checked) {
+        if (e.checked) {
             updatedPay += 200;
         }
         else
             updatedPay -= 200;
         formik.setFieldValue('price', updatedPay);
     };
-
 
     return (
         <div >
@@ -98,9 +83,10 @@ export default function SetEventDialog(props) {
                         <span className="p-float-label p-input-icon-right">
                             <InputText
                                 defaultValue={formik.values.price}
-                                className={classNames({ 'p-invalid': isFormFieldInvalid('price') })}
-                                onBlur={(e) => {
-                                    formik.setFieldValue('price', e.target.value);
+                                classNames={classNames({ 'p-invalid': isFormFieldInvalid('price') })}
+                                onChange={(e) => {
+                                    const price = parseInt(e.target.value);
+                                    formik.setFieldValue('price', price);
                                 }}
                             />
                             <i className="pi pi-dollar" style={{ marginRight: "7px" }} />
@@ -111,6 +97,7 @@ export default function SetEventDialog(props) {
                         <br />
                         <span className="p-float-label p-input-icon-right">
                             <InputTextarea
+                                className="setDialogComp"
                                 value={formik.values.coments}
                                 onChange={(e) => {
                                     formik.setFieldValue('coments', e.target.value);

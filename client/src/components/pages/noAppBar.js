@@ -1,4 +1,3 @@
-// NoAppBarLayout.jsx
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
@@ -6,7 +5,7 @@ const NoAppBarLayout = ({ children }) => {
     return (
         <div>
             {children}
-            <Outlet/>
+            <Outlet />
         </div>
     );
 }

@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
-import ReactDOM from 'react-dom/client';
 import { Tag } from 'primereact/tag';
 import 'primeicons/primeicons.css';
-import { PrimeReactProvider } from 'primereact/api';
 import 'primeflex/primeflex.css';
 import 'primereact/resources/primereact.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import { InputText } from 'primereact/inputtext';
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Dropdown } from 'primereact/dropdown';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
@@ -22,13 +20,10 @@ import { Toast } from 'primereact/toast'
 
 export default function AddPersonDialog() {
     const toast = React.useRef(null);
-    const [selectedCity, setSelectedCity] = useState(null);
-    const cities = [{ personType: "אורח" }, { personType: "חבר" }, { personType: "שותף" }];
     const [visible, setVisible] = useState(false);
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const [createCustomer, { data: res, isLoading, isError, error }] = useCreatePersonMutation()
     const [statuses] = useState(['חבר', 'שותף', 'אורח']);
-    
+    const [createCustomer, { data: res, isLoading, isError, error }] = useCreatePersonMutation()
+
     const getSeverity = (value) => {
         switch (value) {
             case 'שותף':
@@ -51,7 +46,7 @@ export default function AddPersonDialog() {
             personType: '',
             email: '',
             phone: '',
-            phone2:''
+            phone2: ''
         },
         validate: (data) => {
             let errors = {};
@@ -61,8 +56,9 @@ export default function AddPersonDialog() {
             }
             return errors;
         },
+
         onSubmit: (data) => {
-            const data2={personname:data.personname,phone:data.phone,phone2:data.phone2,email:data.email,personType:data.personType.personType}
+            const data2 = { personname: data.personname, phone: data.phone, phone2: data.phone2, email: data.email, personType: data.personType.personType }
             createCustomer(data2)
             formik.resetForm();
         }
@@ -73,7 +69,6 @@ export default function AddPersonDialog() {
     const getFormErrorMessage = (name) => {
         return isFormFieldInvalid(name) ? <small className="p-error">{formik.errors[name]}</small> : <small className="p-error">&nbsp;</small>;
     };
-
 
     return (
         <>
@@ -96,7 +91,7 @@ export default function AddPersonDialog() {
                             <i className="pi pi-user" style={{ marginRight: "7px" }} />
                         </span>
                         {getFormErrorMessage('personname')}
-                        <br/>
+                        <br />
                         <span className="p-float-label p-input-icon-right">
                             <InputText
                                 id="phone"
@@ -139,10 +134,10 @@ export default function AddPersonDialog() {
                             <i className="pi pi-at" style={{ marginRight: "7px" }} />
                         </span>
                         {getFormErrorMessage('email')}
-                        <br/>
+                        <br />
                         <span className="p-float-label p-input-icon-right">
                             <Dropdown
-                            className="w-full md:w-17rm"
+                                className="w-full md:w-17rm"
                                 value={formik.values.personType}
                                 options={statuses}
                                 name="personType"
@@ -152,11 +147,11 @@ export default function AddPersonDialog() {
                                     return <Tag value={option} severity={getSeverity(option)}></Tag>;
                                 }}
                                 onChange={(e) => {
-                                    const roleObj={personType:e.value}
-                                    formik.setFieldValue('personType',roleObj );
+                                    const roleObj = { personType: e.value }
+                                    formik.setFieldValue('personType', roleObj);
                                 }}
                             />
-                             <i className="pi pi-check" style={{ marginRight: "7px" }} />
+                            <i className="pi pi-check" style={{ marginRight: "7px" }} />
                         </span>
                         <br />
 

@@ -1,4 +1,3 @@
-// AppLayout.jsx
 import React from 'react';
 import AppBAr from '../appBar';
 import { Outlet } from 'react-router-dom';
@@ -8,7 +7,7 @@ const AppLayout = ({ children }) => {
         <div>
             <AppBAr />
             {children}
-            <Outlet/>
+            <Outlet />
         </div>
     );
 }

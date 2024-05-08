@@ -12,31 +12,22 @@ import { InputText } from "primereact/inputtext";
 import { Checkbox } from "primereact/checkbox";
 import { useFormik } from 'formik';
 import { Toast } from 'primereact/toast';
-import { classNames } from 'primereact/utils';
 import { RadioButton } from "primereact/radiobutton";
 import { useSendEmailMutation } from "../slices/emailSlice";
 
 export default function AddEventDialog(props) {
     const [visible, setVisible] = useState(props.visible);
-
-    // const [selectedPerson, setselectedPerson] = useState(null);
-
-    const str = `הוספת אירוע ${props.eventType}`
-
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
-
-    const { data: customers } = useGetPersonsQuery()
-
-    const [CreateEvent] = useCreateEventMutation()
-
-    const [sendEmail] = useSendEmailMutation()
-
+    const [date, setDate] = useState(props.date?.split("T")[0])
     const [id, setId] = useState('')
     const [type, setType] = useState('')
     const [email, setEmail] = useState(undefined)
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { data: customers } = useGetPersonsQuery()
+    const [CreateEvent] = useCreateEventMutation()
+    const [sendEmail] = useSendEmailMutation()
+    const toast = useRef(null);
 
-
-    const [date, setDate] = useState(props.date?.split("T")[0])
+    const str = `הוספת אירוע ${props.eventType}`
 
     const radioBtns = [
         {
@@ -48,8 +39,6 @@ export default function AddEventDialog(props) {
             value: 'העברה בנקאית',
         }
     ];
-
-    const toast = useRef(null);
 
     const selectedPersonTemplate = (option, props) => {
         if (option) {
@@ -74,7 +63,6 @@ export default function AddEventDialog(props) {
         );
     };
 
-
     const formik = useFormik({
         initialValues: {
             personname: '',
@@ -95,16 +83,16 @@ export default function AddEventDialog(props) {
 
             return errors;
         },
+
         onSubmit: (data1) => {
             let data2 = { ...data1, personId: id, date: date, eventType: props.eventType }
             CreateEvent(data2)
-            let str='aaa'
-            formik.values.speakers ? str="המחיר כולל הגברה":str="המחיר ללא הגברה, ניתן להשתמש בהגברה בתוספת של 200 שקלים"
-            const body="תאריך:"+ props.heb.hebrew+" ,"+props.eventType+"\n"+"מחיר:"+formik.values.price+"\n"+str+"\n"+"מצורף תקנון אולם, נא לקרוא בעיון."+"\n מזל טוב!!"
-            email&&sendEmail({recipient:email,subject:"אישור אירוע",message:body})
+            let str = ''
+            formik.values.speakers ? str = "המחיר כולל הגברה" : str = "המחיר ללא הגברה, ניתן להשתמש בהגברה בתוספת של 200 שקלים"
+            const body = "תאריך:" + props.heb.hebrew + " " + props.eventType + "\n" + "מחיר:" + formik.values.price + "\n" + str + "\n" + "מצורף תקנון אולם, נא לקרוא בעיון." + "\n מזל טוב!!"
+            email && sendEmail({ recipient: email, subject: "אישור אירוע", message: body })
             props.setVisible(false)
             formik.resetForm()
-
         }
     });
 
@@ -119,7 +107,6 @@ export default function AddEventDialog(props) {
             price();
         }
     }, [type])
-
 
     const price = () => {
         let updatedPay;
@@ -153,51 +140,51 @@ export default function AddEventDialog(props) {
         formik.setFieldValue('price', updatedPay);
     };
 
-
-
     return (
         <>
             <div>
                 <Dialog header={str} visible={visible} style={{ width: '50vw' }} onHide={() => { setVisible(false); props.setVisible(false) }} >
                     <AddPersonDialog />
-                    <br/>
-                    <br/>
+                    <br />
+                    <br />
 
                     <form onSubmit={formik.handleSubmit} >
                         <Toast ref={toast} />
-                            <Dropdown
-                            className="dropdown"
+                        <Dropdown
+                            className="dialogComp"
                             name="personname"
-                                value={formik.values.personname}
-                                options={customers}
-                                optionLabel="personname"
-                                placeholder="בחר לקוח"
-                                showClear filter valueTemplate={selectedPersonTemplate} itemTemplate={eventOptionTemplate}
-                                onChange={(e) => {
-                                    formik.setFieldValue('personname', e.value);
-                                }}
-                            />
+                            value={formik.values.personname}
+                            options={customers}
+                            optionLabel="personname"
+                            placeholder="בחר לקוח"
+                            showClear filter valueTemplate={selectedPersonTemplate} itemTemplate={eventOptionTemplate}
+                            onChange={(e) => {
+                                formik.setFieldValue('personname', e.value);
+                            }}
+                        />
                         {getFormErrorMessage("personname")}
                         <br />
                         <br />
 
                         <span className="p-float-label p-input-icon-right">
                             <InputText
-                                defaultValue={formik.values.price}
-                                className={classNames({ 'p-invalid': isFormFieldInvalid('price') })}
-                                onBlur={(e) => {
-                                    formik.setFieldValue('price', e.target.value);
-                                    formik.setFieldValue('price', parseInt(formik.values.price));
+                                className="dialogComp"
+                                value={formik.values.price}
+                                onChange={(e) => {
+                                    const price = parseInt(e.target.value);
+                                    formik.setFieldValue('price', price);
                                 }}
                             />
-                            <i className="pi pi-dollar" style={{ marginRight: "7px" }} />
+
                             <label htmlFor="value">מחיר</label>
+                            <i className="pi pi-dollar" style={{ marginRight: "7px" }} />
                         </span>
                         {getFormErrorMessage("price")}
                         <br />
                         <br />
                         <span className="p-float-label p-input-icon-right">
                             <InputTextarea
+                                className="dialogComp"
                                 value={formik.values.coments}
                                 onChange={(e) => {
                                     formik.setFieldValue('coments', e.target.value);

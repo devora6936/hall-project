@@ -3,6 +3,7 @@ import AppBAr from "../appBar"
 const AdminPage = () => {
     return (
         <>
+
         </>
     )
 }

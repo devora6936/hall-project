@@ -15,4 +15,4 @@ const EmailApiSlice = apiSlice.injectEndpoints({
 
 
 export default EmailApiSlice
-export const {useSendEmailMutation}=EmailApiSlice
+export const { useSendEmailMutation } = EmailApiSlice

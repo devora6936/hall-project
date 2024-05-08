@@ -22,3 +22,11 @@ body {
   border-radius: 10px;
   margin-bottom: 1rem;
 }
+
+/* .App{
+  background:url('../public/image.png');
+  background-repeat: repeat-y;
+  background-size: cover;
+  min-height: 100vh;
+} */
+

@@ -1,14 +1,8 @@
-import ReactDOM from 'react-dom/client';
-import 'primeicons/primeicons.css';
-import { PrimeReactProvider } from 'primereact/api';
-import 'primeflex/primeflex.css';
-import 'primereact/resources/primereact.css';
-import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import { InputText } from 'primereact/inputtext';
 import { Avatar } from 'primereact/avatar';
 import React, { useRef } from 'react';
 import { Menubar } from 'primereact/menubar';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Menu } from 'primereact/menu'
 import { useDispatch, useSelector } from 'react-redux';
 import apiSlice from '../slices/apiSlice';
@@ -17,13 +11,16 @@ import { Button } from '@mui/material';
 
 export default function AppBAr(props) {
     const navigate = useNavigate()
-    const dispatch=useDispatch()
+    const dispatch = useDispatch()
+    const userFullName = localStorage.getItem('username') || '?'
+    const { isUserLoggedIn } = useSelector((state) => state.auth)
     const menuRight = useRef(null)
+
     const items2 = [
         {
             label: 'התנתקות ',
             icon: 'pi pi-sign-out',
-            command: () => {logout()}
+            command: () => { logout() }
         },
     ]
     const items = [
@@ -34,7 +31,7 @@ export default function AppBAr(props) {
                 navigate('/adminPage');
             }
         },
-       {
+        {
             label: 'לקוחות',
             icon: 'pi pi-users',
             command: () => {
@@ -71,8 +68,8 @@ export default function AppBAr(props) {
         }
 
     ];
-    const userFullName = localStorage.getItem('username') || '?'
-    const {isUserLoggedIn} = useSelector((state)=>state.auth)
+
+
     const start = <Avatar size="medium" label={userFullName.charAt(0)} style={{ backgroundColor: '#8284f5', color: '#fff', fontSize: 18, cursor: 'pointer' }} shape="circle"
         onClick={(event) => menuRight.current.toggle(event)} aria-controls="popup_menu_right" aria-haspopup />
 
@@ -92,11 +89,11 @@ export default function AppBAr(props) {
 
     return (
         <div className="card">
-            <Menubar model={isUserLoggedIn&&items} end={end} start={start} />
+            <Menubar model={isUserLoggedIn && items} end={end} start={start} />
             <Menu model={items2} popup ref={menuRight} id="popup_menu_right" popupAlignment="right" />
-            {!isUserLoggedIn&&<h3>יש לבצע כניסה</h3>}
-            {!isUserLoggedIn&&<Button type='submit' icon="pi pi-user" onClick={()=>navigate('/')}>  כניסה למערכת  </Button>            
-}
+            {!isUserLoggedIn && <h3>יש לבצע כניסה</h3>}
+            {!isUserLoggedIn && <Button type='submit' icon="pi pi-user" onClick={() => navigate('/')}>  כניסה למערכת  </Button>
+            }
 
         </div>
     )

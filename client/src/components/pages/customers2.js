@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { Tooltip } from 'primereact/tooltip';
-import { Checkbox } from "primereact/checkbox";
-import AppBAr from '../appBar';
-import { useGetPersonsQuery, useLoadPersonsMutation, useUpdatePersonMutation } from '../../slices/personSlice';
-import { FilterMatchMode, FilterOperator } from 'primereact/api';
+import { useGetPersonsQuery, useUpdatePersonMutation } from '../../slices/personSlice';
+import { FilterMatchMode } from 'primereact/api';
 import { InputText } from 'primereact/inputtext';
 import AddPersonDialog from '../addPersonDialog';
-import UpdateDialog from '../updateDialog';
 import { Tag } from 'primereact/tag';
 import { Dropdown } from 'primereact/dropdown';
 import { useSelector } from 'react-redux';
@@ -20,13 +17,12 @@ import UploadUsers from '../uploadPeopleDialog';
 export default function Customers2() {
     const [updateUser, { data, isLoadingUpdate, isErrorUpdate, errorUpdate, isSuccess }] = useUpdatePersonMutation()
 
-    const [txt, setTxt] = useState("")
     const [statuses] = useState(['חבר', 'שותף', 'אורח']);
     const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS }
     });
     const [globalFilterValue, setGlobalFilterValue] = useState('');
-    const {isUserLoggedIn} = useSelector((state)=>state.auth)
+    const { isUserLoggedIn } = useSelector((state) => state.auth)
 
 
     const { data: events, isLoading, isError, error } = useGetPersonsQuery()
@@ -55,7 +51,6 @@ export default function Customers2() {
                 return null;
         }
     };
-    // const exportColumns = cols.map((col) => ({ title: col.header, dataKey: col.field }));
 
     const exportCSV = (selectionOnly) => {
         dt.current.exportCSV({ selectionOnly });
@@ -81,19 +76,16 @@ export default function Customers2() {
                     </span>
                 </div>
                 <div className="flex align-items-center justify-content-end gap-2">
-                    <UploadUsers/>
+                    <UploadUsers />
                     <AddPersonDialog />
                     <Button type="button" icon="pi pi-file" rounded onClick={() => exportCSV(false)} data-pr-tooltip="CSV" />
-                    
+
                 </div>
             </>
         );
     };
-    const header = renderHeader();
-    const updateTemplate = (cust) => {
 
-        return <UpdateDialog cust={cust} />
-    }
+    const header = renderHeader();
 
     const textEditor = (options) => {
         return <InputText type="text" value={options.value} onChange={(e) => options.editorCallback(e.target.value)} />;
@@ -103,7 +95,7 @@ export default function Customers2() {
         let { newData, index } = e;
         updateUser(newData)
     };
-    
+
     const allowEdit = (rowData) => {
         return rowData.personname !== undefined;
     };
@@ -128,18 +120,18 @@ export default function Customers2() {
 
     return (
         <>
-        {isUserLoggedIn&&
-            <div className="card">
-                <h1>לקוחות </h1>
-                <Tooltip target=".export-buttons>button" position="bottom" />
-                <DataTable ref={dt} value={events} header={header}  dataKey="id" editMode="row" onRowEditComplete={onRowEditComplete} scrollable tableStyle={{ minWidth: '50rem' }} showGridlines filters={filters} filterDisplay="row" >
-                    {cols.map((col, index) => (
-                        col.field=="personType"?<Column className='cul' key={index} field={col.field} header={col.header}  body={statusBodyTemplate} editor={(options) => statusEditor(options)}/>:
-                        <Column className='cul' key={index} field={col.field} header={col.header}  editor={(options) => textEditor(options)}/>
-                    ))}
-                     <Column rowEditor={allowEdit} headerStyle={{ width: '10%', minWidth: '8rem' }} bodyStyle={{ textAlign: 'center' }}></Column>
-                </DataTable>
-            </div>}
+            {isUserLoggedIn &&
+                <div className="card">
+                    <h1>לקוחות </h1>
+                    <Tooltip target=".export-buttons>button" position="bottom" />
+                    <DataTable ref={dt} value={events} header={header} dataKey="id" editMode="row" onRowEditComplete={onRowEditComplete} scrollable tableStyle={{ minWidth: '50rem' }} showGridlines filters={filters} filterDisplay="row" >
+                        {cols.map((col, index) => (
+                            col.field == "personType" ? <Column className='cul' key={index} field={col.field} header={col.header} body={statusBodyTemplate} editor={(options) => statusEditor(options)} /> :
+                                <Column className='cul' key={index} field={col.field} header={col.header} editor={(options) => textEditor(options)} />
+                        ))}
+                        <Column rowEditor={allowEdit} headerStyle={{ width: '10%', minWidth: '8rem' }} bodyStyle={{ textAlign: 'center' }}></Column>
+                    </DataTable>
+                </div>}
         </>
     );
 }
