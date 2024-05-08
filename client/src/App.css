@@ -17,6 +17,12 @@
   position: relative;
   border: 1px solid black;
   height: 130px;
+  border-radius: 4px;
+
+}
+
+.ourday:hover {
+  background-color: #f0f0f0;
 }
 
 .reactJewishDatePicker .selectedDate {

@@ -1,4 +1,4 @@
-const Person = require('../models/Person')
+const Person = require('../models/Person');
 const dataImportService = require('../services/dataImportService');
 
 const importData = async (req, res) => {
@@ -7,57 +7,81 @@ const importData = async (req, res) => {
         await dataImportService.importDataFromExcel(filePath);
         res.send('Data import completed.');
     } catch (error) {
-        console.log(error);
+        console.error(error);
+        if (error.code === 'ENOENT') {
+            res.status(404).send('File not found.');
+        } else {
+            res.status(500).send('Internal Server Error');
+        }
     }
-
-}
+};
 
 const createPerson = async (req, res) => {
-    const { personname, email, phone, personType, phone2 } = req.body
-    if (!personname)
-        return res.status(400).send(`missing required fields`)
-    const tmp = await Person.find({ personname: personname })
-    if (tmp.length != 0)
-        return res.status(400).send(`duplicate fields`)
-    await Person.create({ personname, email, phone, personType, phone2 })
-    res.send(`person${personname} was created`)
-}
+    try {
+        const { personname, email, phone, personType, phone2 } = req.body;
+        if (!personname)
+            return res.status(400).send(`missing required fields`);
+        const tmp = await Person.find({ personname: personname });
+        if (tmp.length !== 0)
+            return res.status(400).send(`duplicate fields`);
+        await Person.create({ personname, email, phone, personType, phone2 });
+        res.send(`person ${personname} was created`);
+    } catch (error) {
+        console.error(error);
+        res.status(400).send('Bad Request');
+    }
+};
 
 const getAllPerson = async (req, res) => {
-    const persons = await Person.find().lean()
-    if (!persons[0])
-        return res.status(400).send('there are no persons:(')
-    res.json(persons)
-}
+    try {
+        const persons = await Person.find().lean();
+        if (!persons[0])
+            return res.status(404).send('No persons found');
+        res.json(persons);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
 
 const updatePerson = async (req, res) => {
-    const { _id, personname, email, phone, personType, phone2 } = req.body
-    if (!_id || !personname)
-        return res.status(400).send('fields are required')
-    const person = await Person.findById(_id).exec()
-    if (!person)
-        return res.status(400).send(`there is no person with id ${id}`)
-    if (personname != person.personname) {
-        const tmp = await Person.find({ personname: personname }).lean()
-        if (tmp.length != 0)
-            return res.status(400).send(`duplicate fields`)
+    try {
+        const { _id, personname, email, phone, personType, phone2 } = req.body;
+        if (!_id || !personname)
+            return res.status(400).send('fields are required');
+        const person = await Person.findById(_id).exec();
+        if (!person)
+            return res.status(404).send(`Person not found`);
+        if (personname !== person.personname) {
+            const tmp = await Person.find({ personname: personname }).lean();
+            if (tmp.length !== 0)
+                return res.status(400).send(`duplicate fields`);
+        }
+        person.personname = personname;
+        person.email = email;
+        person.phone = phone;
+        person.phone2 = phone2;
+        person.personType = personType;
+        await person.save();
+        res.send(`person ${person.personname} updated`);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
     }
-    person.personname = personname
-    person.email = email
-    person.phone = phone
-    person.phone2 = phone2
-    person.personType = personType
-    await person.save()
-    res.send(`person ${person.personname} updated`)
-}
+};
 
 const deletePerson = async (req, res) => {
-    const { id } = req.params
-    const person = await Person.findById(id).exec()
-    if (!person)
-        return res.status(400).send(`there is no person with id ${id}`)
-    await person.deleteOne()
-    res.send(`person ${user.personname} deleted`)
-}
+    try {
+        const { id } = req.params;
+        const person = await Person.findById(id).exec();
+        if (!person)
+            return res.status(404).send(`Person not found`);
+        await person.deleteOne();
+        res.send(`person ${person.personname} deleted`);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
 
-module.exports = { deletePerson, updatePerson, getAllPerson, createPerson, importData }
+module.exports = { deletePerson, updatePerson, getAllPerson, createPerson, importData };

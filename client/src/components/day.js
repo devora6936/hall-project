@@ -29,11 +29,27 @@ const Day = (props) => {
     const [dayFlag,setDayFlag]=useState(false)
     const [kidushFlag,setKIdushFlag]=useState(false)
 
+    // useEffect(() => {
+    //     axios.get(`https://www.hebcal.com/converter?cfg=json&date=${date}&g2h=1&strict=1`).then((response) => {
+    //         setHeb(response.data);
+    //     });
+    // }, [date]);
+
     useEffect(() => {
-        axios.get(`https://www.hebcal.com/converter?cfg=json&date=${date}&g2h=1&strict=1`).then((response) => {
+        axios.get(`https://www.hebcal.com/converter?cfg=json&date=${date}&g2h=1&strict=1`)
+          .then((response) => {
             setHeb(response.data);
-        });
-    }, [date]);
+          })
+          .catch((error) => {
+            console.error("Error fetching Hebrew date:", error);
+          });
+      }, [date]);
+    
+      useEffect(() => {
+        if (isError) {
+          console.error("Error fetching events:", error);
+        }
+      }, [isError, error]);
 
     const findEventInDay=(type)=>{
         return events?.filter((e)=>e.eventType==type)[0]
