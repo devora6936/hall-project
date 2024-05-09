@@ -63,9 +63,9 @@ export default function SetEventDialog(props) {
     };
 
     const handleCheckboxChange = (e) => {
-        formik.setFieldValue('speakers', e.checked);
+        formik.setFieldValue('speakers', e.currentTarget.checked);
         let updatedPay = formik.values.price;
-        if (e.checked) {
+        if (e.currentTarget.checked) {
             updatedPay += 200;
         }
         else
@@ -82,7 +82,8 @@ export default function SetEventDialog(props) {
                         <h3>שם לקוח:{props.event?.personId.personname}</h3>
                         <span className="p-float-label p-input-icon-right">
                             <InputText
-                                defaultValue={formik.values.price}
+                                // defaultValue={formik.values.price}
+                                value={formik.values.price}
                                 classNames={classNames({ 'p-invalid': isFormFieldInvalid('price') })}
                                 onChange={(e) => {
                                     const price = parseInt(e.target.value);

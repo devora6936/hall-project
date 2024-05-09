@@ -55,11 +55,11 @@ export default function Register() {
 
     React.useEffect(() => {
         if (isSuccess) {
-            dispatch(setToken(data))
-            navigate('/')
+            toast.current.show({ severity: 'success', summary: 'הפעולה הצליחה', detail: 'מזכירה חדשה נוספה'});
+            alert("מזכירה נוספה בהצלחה")
         }
         if (isError) {
-            toast.current.show({ severity: 'error', summary: 'שגיאה', detail: 'יש להכניס שם משתמש ייחודי' });
+            toast.current.show({ severity: 'error', summary: 'שגיאה', detail: 'יש להכניס מייל ייחודי' });
             formik.resetForm();
         }
 

@@ -35,9 +35,9 @@ const register = async (req, res) => {
         if (!username || !password) {
             return res.status(400).json({ message: 'fields are required' })
         }
-        const duplicate = await User.findOne({ username: username }).lean()
+        const duplicate = await User.findOne({ email: email }).lean()
         if (duplicate) {
-            return res.status(409).json({ message: "Duplicate username" })
+            return res.status(409).json({ message: "Duplicate email" })
         }
         const hashedPwd = await bcrypt.hash(password, 10)
         const userObject = { email, username, phone, password: hashedPwd }
