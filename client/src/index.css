@@ -6,7 +6,9 @@ html {
 
 body {
   text-align: center;
-  font-family: var(--font-family);
+  font-family: "Rubik", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
   font-weight: normal;
   background: var(--surface-ground);
   color: var(--text-color);
@@ -14,6 +16,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   direction: rtl;
+}
+
+
+.rubik- {
+  
 }
 
 .card {
