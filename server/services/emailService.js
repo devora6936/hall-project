@@ -20,6 +20,18 @@ function sendEmail(recipient, subject, message, attachments) {
         to: recipient,
         subject: subject,
         text: message,
+        html: `
+        <html dir="rtl">
+        <head>
+            <style>
+                /* Add any additional styling here */
+            </style>
+        </head>
+        <body>
+            <p>${message}</p>
+        </body>
+        </html>
+    `,
         attachments: attachments 
     };
 
