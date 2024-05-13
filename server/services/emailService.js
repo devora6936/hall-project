@@ -26,7 +26,10 @@ function sendEmail(recipient, subject, message, attachments) {
         <html dir="rtl">
         <head>
             <style>
-                /* Add any additional styling here */
+            body {
+                direction: rtl;
+                unicode-bidi: embed;
+            }
             </style>
         </head>
         <body>
