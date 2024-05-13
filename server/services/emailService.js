@@ -15,6 +15,8 @@ let transporter = nodemailer.createTransport({
 });
 
 function sendEmail(recipient, subject, message, attachments) {
+    const htmlMessage = message.replace('/n/g', '<br>');
+
     let mailOptions = {
         from: 'אולם היכל אברהם יצחק<heichal@outlook.co.il>',
         to: recipient,
@@ -28,7 +30,7 @@ function sendEmail(recipient, subject, message, attachments) {
             </style>
         </head>
         <body>
-            <p>${message}</p>
+            <p>${htmlMessage}</p>
         </body>
         </html>
     `,
