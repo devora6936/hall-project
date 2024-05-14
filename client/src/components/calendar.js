@@ -1,144 +1,28 @@
-// import { useState, useEffect } from 'react';
-// import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
-// import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
-// import Day from './day'
-
-
-// const Calendar = (props) => {
-
-//   const [month, setMonth] = useState()
-//   const [year, setYear] = useState()
-//   const [days, setDays] = useState([])
-//   var date = new Date(year, month, 1);
-
-//   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1148)
-
-//   const updateScreenSize = () => {
-//     setIsSmallScreen(window.innerWidth <= 1148);
-//   };
-
-//   useEffect(() => {
-//     window.addEventListener("resize", updateScreenSize);
-//     return () => {
-//       window.removeEventListener("resize", updateScreenSize);
-//     };
-//   }, []);
-
-//   const renderDaysInRows = () => {
-//     const rows = [];
-//     const daysInMonth = getDaysInMonth(month, year);
-//     const firstDayOfMonth = new Date(year, month, 1).getDay();
-//     let currentRow = [];
-
-//     for (let i = 0; i < firstDayOfMonth; i++) {
-//       currentRow.push(null);
-//     }
-
-//     for (let i = 0; i < daysInMonth.length; i++) {
-//       currentRow.push(daysInMonth[i]);
-
-//       if (currentRow.length === 7) {
-//         rows.push(currentRow);
-//         currentRow = [];
-//       }
-//     }
-
-//     if (currentRow.length > 0) {
-//       rows.push(currentRow);
-//     }
-
-//     return rows;
-//   }
-
-//   const getDaysInMonth = (month, year) => {
-//     var date = new Date(year, month, 1);
-//     var days = [];
-//     let count = 1
-//     while (date.getMonth() === month) {
-//       days.push(++count);
-//       date.setDate(date.getDate() + 1);
-//     }
-
-//     return days;
-//   }
-
-//   useEffect(() => {
-//     setDays(getDaysInMonth(month, year))
-
-//   }, []);
-
-//   useEffect(() => {
-//     setMonth(props.date.getMonth())
-//     setYear(props.date.getFullYear())
-//   }, [props.date])
-
-//   return (
-//     <>
-//       <Table>
-//         <Thead>
-//           <Tr>
-//             <Th>ראשון</Th>
-//             <Th>שני</Th>
-//             <Th>שלישי</Th>
-//             <Th>רביעי</Th>
-//             <Th>חמישי</Th>
-//             <Th>שישי</Th>
-//             <Th>שבת</Th>
-//           </Tr>
-//         </Thead>
-//         <Tbody>
-//           {renderDaysInRows().map((row, rowIndex) => (
-//             <Tr key={rowIndex}>
-//               {row.map((day, dayIndex) => (
-//                 <Td key={dayIndex} className="td">
-//                   {day && <div className="day-cell">
-//                     <Day day={day} month={month} year={year} date={props.date} isSmallScreen={isSmallScreen} />
-//                   </div>}
-//                 </Td>
-//               ))}
-//             </Tr>
-//           ))}
-//         </Tbody>
-//       </Table>
-
-//     </>
-//   )
-// }
-
-// export default Calendar
-
-import React, { useState, useEffect } from 'react';
-import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import { useState, useEffect } from 'react';
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
-import Day from './day';
+import Day from './day'
+
 
 const Calendar = (props) => {
-  const [month, setMonth] = useState(props.date.getMonth());
-  const [year, setYear] = useState(props.date.getFullYear());
-  const [days, setDays] = useState([]);
 
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1148);
+  const [month, setMonth] = useState()
+  const [year, setYear] = useState()
+  const [days, setDays] = useState([])
+  var date = new Date(year, month, 1);
+
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1148)
 
   const updateScreenSize = () => {
     setIsSmallScreen(window.innerWidth <= 1148);
   };
 
   useEffect(() => {
-    window.addEventListener('resize', updateScreenSize);
+    window.addEventListener("resize", updateScreenSize);
     return () => {
-      window.removeEventListener('resize', updateScreenSize);
+      window.removeEventListener("resize", updateScreenSize);
     };
   }, []);
-
-  const getDaysInMonth = (month, year) => {
-    const date = new Date(year, month, 1);
-    const days = [];
-    while (date.getMonth() === month) {
-      days.push(new Date(date));
-      date.setDate(date.getDate() + 1);
-    }
-    return days;
-  };
 
   const renderDaysInRows = () => {
     const rows = [];
@@ -150,30 +34,43 @@ const Calendar = (props) => {
       currentRow.push(null);
     }
 
-    daysInMonth.forEach((day) => {
-      currentRow.push(day);
+    for (let i = 0; i < daysInMonth.length; i++) {
+      currentRow.push(daysInMonth[i]);
+
       if (currentRow.length === 7) {
         rows.push(currentRow);
         currentRow = [];
       }
-    });
+    }
 
     if (currentRow.length > 0) {
       rows.push(currentRow);
     }
 
     return rows;
-  };
+  }
+
+  const getDaysInMonth = (month, year) => {
+    var date = new Date(year, month, 1);
+    var days = [];
+    let count = 1
+    while (date.getMonth() === month) {
+      days.push(++count);
+      date.setDate(date.getDate() + 1);
+    }
+
+    return days;
+  }
 
   useEffect(() => {
-    setDays(getDaysInMonth(month, year));
-  }, [month, year]);
+    setDays(getDaysInMonth(month, year))
+
+  }, []);
 
   useEffect(() => {
-    console.log('Setting month and year from props.date:', props.date);
-    setMonth(props.date.getMonth());
-    setYear(props.date.getFullYear());
-  }, [props.date]);
+    setMonth(props.date.getMonth())
+    setYear(props.date.getFullYear())
+  }, [props.date])
 
   return (
     <>
@@ -194,27 +91,21 @@ const Calendar = (props) => {
             <Tr key={rowIndex}>
               {row.map((day, dayIndex) => (
                 <Td key={dayIndex} className="td">
-                  {day && (
-                    <div className="day-cell">
-                      <Day
-                        day={day.getDate()}
-                        month={month}
-                        year={year}
-                        date={props.date}
-                        isSmallScreen={isSmallScreen}
-                      />
-                    </div>
-                  )}
+                  {day && <div className="day-cell">
+                    <Day day={day} month={month} year={year} date={props.date} isSmallScreen={isSmallScreen} />
+                  </div>}
                 </Td>
               ))}
             </Tr>
           ))}
         </Tbody>
       </Table>
-    </>
-  );
-};
 
-export default Calendar;
+    </>
+  )
+}
+
+export default Calendar
+
 
 
