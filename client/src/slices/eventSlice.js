@@ -19,6 +19,15 @@ const eventApiSlice = apiSlice.injectEndpoints({
 
         }),
 
+        getEventsByRange: build.query({
+            query: (filter) => ({
+                url: '/api/events/byRange/' + filter.startDate + '/' + filter.endDate,
+                method: 'GET',
+            }),
+            providesTags: ['eventsByRange']
+
+        }),
+
         getEventsByWeek: build.query({
             query: () => ({
                 url: '/api/events/byWeek',
@@ -34,7 +43,7 @@ const eventApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: event
             }),
-            invalidatesTags: ['events', 'eventsByDate', 'eventsByWeek']
+            invalidatesTags: ['events', 'eventsByDate', 'eventsByWeek','eventsByRange']
 
         }),
 
@@ -44,7 +53,7 @@ const eventApiSlice = apiSlice.injectEndpoints({
                 method: 'PUT',
                 body: event
             }),
-            invalidatesTags: ['events', 'eventsByDate', 'eventsByWeek']
+            invalidatesTags: ['events', 'eventsByDate', 'eventsByWeek','eventsByRange']
 
         }),
         
@@ -53,7 +62,7 @@ const eventApiSlice = apiSlice.injectEndpoints({
                 url: '/api/events/' + id,
                 method: 'DELETE',
             }),
-            invalidatesTags: ['events', 'eventsByDate', 'eventsByWeek']
+            invalidatesTags: ['events', 'eventsByDate', 'eventsByWeek','eventsByRange']
         })
     })
 
@@ -61,4 +70,4 @@ const eventApiSlice = apiSlice.injectEndpoints({
 
 
 export default eventApiSlice
-export const { useGetEventsByDAteQuery, useDeleteEventMutation, useCreateEventMutation, useUpdateEventMutation, useGetEventsQuery, useGetEventsByWeekQuery } = eventApiSlice
+export const { useGetEventsByDAteQuery, useDeleteEventMutation, useCreateEventMutation, useUpdateEventMutation, useGetEventsQuery, useGetEventsByWeekQuery,useGetEventsByRangeQuery } = eventApiSlice

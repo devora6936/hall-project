@@ -11,6 +11,7 @@ import Register from './components/pages/register';
 import Customers2 from './components/pages/customers2';
 import NoAppBarLayout from './components/pages/noAppBar';
 import AppLayout from './components/pages/withAppBar';
+import EentsByRange from './components/pages/rangeEvents';
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
             <Route path='/events' element={<Events />} />
             <Route path='/weekEvents' element={<WeekEvents />} />
             <Route path='/register' element={<Register />} />
+            <Route path='/byRange' element={<EentsByRange />} />
           </Route>
         </Routes>
 

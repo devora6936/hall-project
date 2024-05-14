@@ -16,7 +16,7 @@ app.use(express.static("public"))
 app.use(cors(corsOptions))
 app.use('/api/auth',require('./routs/authRouter'))
 
-app.use(verifyJWT)
+//app.use(verifyJWT)
 app.use('/api/persons',require('./routs/personRouter'))
 app.use('/api/events',require('./routs/eventRouter'))
 app.use('/api/email',require('./routs/mailRouter'))

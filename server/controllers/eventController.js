@@ -62,6 +62,29 @@ const getWeekEvent = async (req, res) => {
     }
 };
 
+const getEventsInRrange = async (req, res) => {
+    try {
+        let { firstday, lastday } = req.params;
+        firstday = new Date(firstday)
+        lastday = new Date(lastday)
+        if (!firstday || !lastday)
+            return res.status(400).send('fields are require')
+        const events = await Event.find({
+            date: {
+                $gte: firstday,
+                $lte: lastday
+            }
+        }).lean().populate("personId", { personname: 1, personType: 1 });
+        if (!events[0]) {
+            return res.json([]);
+        }
+        res.json(events);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
 const updateEvent = async (req, res) => {
     try {
         const { _id, date, eventType, price, coments, speakers, payment } = req.body;
@@ -98,4 +121,4 @@ const deleteEvent = async (req, res) => {
     }
 };
 
-module.exports = { deleteEvent, getEventByDate, updateEvent, getAllEvents, CreateEvent, getWeekEvent };
+module.exports = { deleteEvent, getEventByDate, updateEvent, getAllEvents, CreateEvent, getWeekEvent, getEventsInRrange };
