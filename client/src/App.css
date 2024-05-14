@@ -28,6 +28,10 @@
   background-color: #f0f0f0;
 }
 
+.reactJewishDatePicker{
+  width: 16rem;
+}
+
 .reactJewishDatePicker .selectedDate {
   padding: 2px 15px 2px 5px;
   border-radius: 4px;
@@ -142,6 +146,13 @@ width: 15rem;
 
 }
 
+#rangeEvents{
+  margin-top: 15px;
 
+}
 
+#rangeEventsCard {
+  box-shadow: 0 1px 3px rgba(55, 55, 55, 0.5);
+
+}
 
