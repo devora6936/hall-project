@@ -45,6 +45,7 @@ export default function AppBAr(props) {
                 navigate('/register');
             }
         },
+        
         {
             label: 'אירועים',
             icon: 'pi pi-calendar',
@@ -61,6 +62,13 @@ export default function AppBAr(props) {
                     icon: 'pi pi-bars',
                     command: () => {
                         navigate('/weekEvents');
+                    }
+                },
+                {
+                    label: 'סיכום אירועים',
+                    icon: 'pi pi-calculator',
+                    command: () => {
+                        navigate('/byRange');
                     }
                 },
 
