@@ -18,7 +18,7 @@ async function importDataFromExcel(filePath) {
       try {
         await person.save();
       } catch (error) {
-        console.log(error);
+        console.log('Error saving data:', error);
       }
       
       console.log('Data saved:', data);
@@ -27,10 +27,7 @@ async function importDataFromExcel(filePath) {
     console.log('Data import completed.');
   } catch (error) {
     console.log('Error importing data:', error);
-   } 
-
+  }
 }
 
-module.exports = { importDataFromExcel }
-
-
+module.exports = { importDataFromExcel };

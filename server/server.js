@@ -20,6 +20,7 @@ app.use('/api/auth',require('./routs/authRouter'))
 app.use('/api/persons',require('./routs/personRouter'))
 app.use('/api/events',require('./routs/eventRouter'))
 app.use('/api/email',require('./routs/mailRouter'))
+app.use('/api/upload', require('./routs/uploadRouter'))
 
 mongoose.connection.once('open', () => {
     console.log('connected to database')

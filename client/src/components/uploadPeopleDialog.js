@@ -1,14 +1,37 @@
 import React, { useState } from "react";
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
-import { useLoadPersonsMutation } from "../slices/personSlice";
-import { InputText } from "primereact/inputtext";
+import axios from 'axios';
 
 export default function UploadUsers() {
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const handleFileChange = (event) => {
+        setSelectedFile(event.target.files[0]);
+    };
+
+    const handleUpload = async () => {
+        if (!selectedFile) 
+            return;
+
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}api/upload`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+                
+            });
+            window.location.reload();
+        } catch (error) {
+            console.error('Error uploading file:', error);
+        }
+    };
+
 
     const [visible, setVisible] = useState(false);
-    const [loadPeople] = useLoadPersonsMutation()
-    const [path, setPath] = useState('')
 
     const headerElement = (
         <div className="inline-flex align-items-center justify-content-center gap-2">
@@ -18,7 +41,7 @@ export default function UploadUsers() {
 
     const footerContent = (
         <div>
-            <Button label="Ok" icon="pi pi-check" onClick={() => { loadPeople({ filePath: path }); setVisible(false) }} autoFocus />
+            <Button label="Ok" icon="pi pi-check" onClick={() => {  setVisible(false) }} autoFocus />
         </div>
     );
 
@@ -26,14 +49,16 @@ export default function UploadUsers() {
         <div>
             <Button icon="pi pi-users" size="large" rounded outlined severity="Filter" onClick={() => setVisible(true)} />
             <Dialog visible={visible} modal header={headerElement} footer={footerContent} style={{ width: '50rem' }} onHide={() => setVisible(false)}>
-                <p className="m-0">
-                    <InputText
-                        name="path"
-                        onBlur={(e) => setPath(e.target.value)}
-                    />
-                    <label htmlFor="value">הכנס נתיב קובץ</label>
-                </p>
+                <div>
+                    <input id='choose'type="file" onChange={handleFileChange} />
+                    <button id='upload' onClick={handleUpload}>העלאה</button>
+                </div>
             </Dialog>
         </div>
     )
 }
+
+
+
+
+

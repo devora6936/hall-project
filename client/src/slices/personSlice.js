@@ -19,14 +19,7 @@ const personApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ['persons']
         }),
 
-        loadPersons: build.mutation({
-            query: (filePath) => ({
-                url: '/api/persons/loadPeople',
-                method: 'POST',
-                body: filePath
-            }),
-            invalidatesTags: ['persons']
-        }),
+        
 
         updatePerson: build.mutation({
             query: (person) => ({
@@ -36,6 +29,8 @@ const personApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['persons']
         }),
+
+        
         
     })
 
@@ -43,4 +38,4 @@ const personApiSlice = apiSlice.injectEndpoints({
 
 
 export default personApiSlice
-export const { useCreatePersonMutation, useGetPersonsQuery, useUpdatePersonMutation, useLoadPersonsMutation } = personApiSlice
+export const { useCreatePersonMutation, useGetPersonsQuery, useUpdatePersonMutation } = personApiSlice
