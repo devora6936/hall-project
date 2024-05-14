@@ -24,7 +24,7 @@ export default function EentsByRange() {
         if (startDate && endDate) {
             let start = new Date(startDate).toISOString().split('T')[0]
             let end = new Date(endDate).toISOString().split('T')[0]
-            const obj={ startDate: start, endDate: end }
+            const obj = { startDate: start, endDate: end }
             setFilter(obj)
         }
 
@@ -40,6 +40,7 @@ export default function EentsByRange() {
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: "center" }}>
                     <div className="flex justify-content-center" style={{ width: '250px', fontSize: "20px", color: 'GrayText' }}>
                         <ReactJewishDatePicker
+                            className="inrange"
                             isHebrew
                             isRange={true}
                             canSelect={(day) => day.date <= new Date()}
