@@ -18,7 +18,7 @@ export default function UploadUsers() {
         formData.append('file', selectedFile);
 
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}api/upload`, formData, {
+            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/upload`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
