@@ -56,8 +56,8 @@ export default function Register() {
     React.useEffect(() => {
         if (isSuccess) {
             toast.current.show({ severity: 'success', summary: 'הפעולה הצליחה', detail: 'מזכירה חדשה נוספה'});
-            alert("מזכירה נוספה בהצלחה")
         }
+        
         if (isError) {
             toast.current.show({ severity: 'error', summary: 'שגיאה', detail: 'יש להכניס מייל ייחודי' });
             formik.resetForm();

@@ -90,7 +90,7 @@ export default function AddEventDialog(props) {
             let str = ''
             formik.values.speakers ? str = "המחיר כולל הגברה" : str = "המחיר ללא הגברה, ניתן להשתמש בהגברה בתוספת של 200 שקלים"
             const body = "תאריך:" + props.heb.hebrew + " " + props.eventType + "\n" + "מחיר:" + formik.values.price + "\n" + str + "\n" + "מצורף תקנון אולם, נא לקרוא בעיון." + "\n מזל טוב!!\n"+"אין להשיב למייל זה.\nלשאלות ניתן לפנות ל053-3158716\nאו למייל l5871646@gmail.com"
-            //email && sendEmail({ recipient: email, subject: "אישור אירוע", message: body })
+            email && sendEmail({ recipient: email, subject: "אישור אירוע", message: body })
             props.setVisible(false)
             formik.resetForm()
         }
@@ -113,13 +113,13 @@ export default function AddEventDialog(props) {
         if (props.eventType === "בוקר") {
             updatedPay = type === "חבר" ? 900 : type === "שותף" ? 500 : 1200;
         } else if (props.eventType === "ערב" || props.eventType === "מוצש") {
-            updatedPay = type === "חבר" ? 1500 : type === "שותף" ? 600 : 2200;
+            updatedPay = type === "חבר" ? 1500 : type === "שותף" ? 700 : 2200;
         } else if (props.eventType === "יום שלם") {
             updatedPay = type === "חבר" ? 3000 : type === "שותף" ? 2000 : 3500;
         } else if (props.eventType === "שבת") {
             updatedPay = type === "חבר" ? 2500 : type === "שותף" ? 2000 : 3200;
         } else if (props.eventType === "קידוש") {
-            updatedPay = type === "חבר" ? 250 : type === "שותף" ? 250 : 2000;
+            updatedPay = type === "חבר" ? 350 : type === "שותף" ? 350 : 2000;
         }
 
         updatedPay += formik.values.speakers ? 200 : 0;
