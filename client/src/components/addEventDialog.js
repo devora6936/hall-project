@@ -90,7 +90,7 @@ export default function AddEventDialog(props) {
             let str = ''
             formik.values.speakers ? str = "המחיר כולל הגברה" : str = "המחיר ללא הגברה, ניתן להשתמש בהגברה בתוספת של 200 שקלים"
             const body = "תאריך:" + props.heb.hebrew + " " + props.eventType + "\n" + "מחיר:" + formik.values.price + "\n" + str + "\n" + "מצורף תקנון אולם, נא לקרוא בעיון." + "\n מזל טוב!!\n"+"אין להשיב למייל זה.\nלשאלות ניתן לפנות ל053-3158716\nאו למייל l5871646@gmail.com"
-            .//email && sendEmail({ recipient: email, subject: "אישור אירוע", message: body })
+            //email && sendEmail({ recipient: email, subject: "אישור אירוע", message: body })
             props.setVisible(false)
             formik.resetForm()
         }
